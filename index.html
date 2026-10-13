@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Siber Kalkan Quiz</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🛡️</text></svg>">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@600;800&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#14213d;--bg:#eaf2ff;--card:#fff;--ac:#3a86ff;--soft:#d9e8ff;--ok:#1b9c5a;--no:#e5383b}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;background:var(--bg);color:var(--ink);font-family:Nunito,system-ui,sans-serif;font-weight:600;
+ background-image:radial-gradient(circle at 12% 8%,var(--soft) 0 90px,transparent 91px),radial-gradient(circle at 92% 94%,var(--soft) 0 140px,transparent 141px);
+ padding:max(16px,env(safe-area-inset-top)) 16px max(16px,env(safe-area-inset-bottom))}
+body[data-c=ilkokul]{--ac:#ff8c00;--soft:#ffe3b8;--bg:#fff6e6}
+body[data-c=ortaokul]{--ac:#00a896;--soft:#c5f0ea;--bg:#e8faf7}
+body[data-c=lise]{--ac:#7b4bff;--soft:#e0d5ff;--bg:#f2edff}
+body[data-c=genel]{--ac:#e5383b;--soft:#ffd3d4;--bg:#fff0f0}
+main{max-width:560px;margin:0 auto}
+h1,h2,h3,.btn,.pill{font-family:Fredoka,Nunito,sans-serif}
+h1{font-size:2rem;line-height:1.1;margin:.4rem 0 .3rem;text-align:center}
+.sub{text-align:center;margin:0 0 20px;opacity:.8}
+.mascot{display:block;margin:6px auto 0;width:120px;animation:bob 3s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(-6px)}}
+.cats{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.cat{border:3px solid var(--ink);border-radius:22px;background:var(--card);padding:16px 10px;text-align:center;cursor:pointer;font:inherit;color:inherit;box-shadow:0 5px 0 var(--ink);transition:transform .1s,box-shadow .1s}
+.cat:active{transform:translateY(4px);box-shadow:0 1px 0 var(--ink)}
+.cat .e{font-size:2.6rem;display:block}
+.cat b{font-family:Fredoka;font-size:1.2rem;display:block;margin-top:4px}
+.cat small{opacity:.75}
+.cat[data-k=ilkokul]{background:#ffe3b8}.cat[data-k=ortaokul]{background:#c5f0ea}.cat[data-k=lise]{background:#e0d5ff}.cat[data-k=genel]{background:#ffd3d4}
+.top{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.bar{flex:1;height:14px;border:3px solid var(--ink);border-radius:99px;background:#fff;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--ac);width:0;transition:width .4s}
+.pill{border:3px solid var(--ink);background:var(--ac);color:#fff;border-radius:99px;padding:2px 12px;font-weight:600}
+.back{background:none;border:0;font:inherit;font-size:1.4rem;cursor:pointer;color:var(--ink)}
+.q{background:var(--card);border:3px solid var(--ink);border-radius:26px;padding:18px;box-shadow:0 6px 0 var(--ink)}
+.hero{width:96px;height:96px;border-radius:50%;background:var(--soft);border:3px solid var(--ink);display:grid;place-items:center;font-size:3rem;margin:-52px auto 10px;animation:pop .4s}
+@keyframes pop{from{transform:scale(.4);opacity:0}}
+h2{font-size:1.3rem;line-height:1.3;text-align:center;margin:0 0 14px}
+.opt{display:block;width:100%;text-align:left;font:inherit;font-weight:800;color:var(--ink);background:#fff;border:3px solid var(--ink);border-radius:16px;padding:12px 14px;margin-top:10px;cursor:pointer}
+.opt:not(:disabled):active{background:var(--soft)}
+.opt.ok{background:#c9f5dc;border-color:var(--ok)}
+.opt.no{background:#ffd6d7;border-color:var(--no)}
+.opt:disabled{cursor:default}
+.fb{margin-top:14px;padding:12px 14px;border-radius:16px;background:var(--soft);display:none}
+.fb.on{display:block;animation:pop .3s}
+.btn{display:block;width:100%;margin-top:14px;padding:13px;font-size:1.1rem;font-weight:600;color:#fff;background:var(--ac);border:3px solid var(--ink);border-radius:16px;box-shadow:0 4px 0 var(--ink);cursor:pointer}
+.btn:active{transform:translateY(3px);box-shadow:0 1px 0 var(--ink)}
+.btn.alt{background:#fff;color:var(--ink)}
+.res{text-align:center;background:var(--card);border:3px solid var(--ink);border-radius:26px;padding:22px 18px;box-shadow:0 6px 0 var(--ink)}
+.big{font-size:4.5rem;animation:pop .5s}
+.score{font-family:Fredoka;font-size:2.6rem;font-weight:700;color:var(--ac);margin:0}
+.dots{display:flex;gap:6px;justify-content:center;margin:12px 0}
+.dots i{width:22px;height:22px;border-radius:50%;border:3px solid var(--ink);background:var(--no)}
+.dots i.g{background:var(--ok)}
+.hide{display:none}
+:focus-visible{outline:4px solid var(--ink);outline-offset:2px}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<main>
+ <section id="menu">
+  <svg class="mascot" viewBox="0 0 120 130" aria-hidden="true">
+   <path d="M60 6 108 24v38c0 33-22 52-48 62C34 114 12 95 12 62V24z" fill="#3a86ff" stroke="#14213d" stroke-width="5" stroke-linejoin="round"/>
+   <path d="M60 18 98 31v31c0 26-17 42-38 51z" fill="#6ea8ff"/>
+   <circle cx="44" cy="58" r="9" fill="#fff" stroke="#14213d" stroke-width="3"/><circle cx="76" cy="58" r="9" fill="#fff" stroke="#14213d" stroke-width="3"/>
+   <circle cx="46" cy="59" r="4" fill="#14213d"/><circle cx="78" cy="59" r="4" fill="#14213d"/>
+   <path d="M44 82q16 14 32 0" fill="none" stroke="#14213d" stroke-width="5" stroke-linecap="round"/>
+  </svg>
+  <h1>Siber Kalkan Quiz</h1>
+  <p class="sub">Kendine uygun seviyeyi seç, 8 soruda siber bilgini test et!</p>
+  <div class="cats">
+   <button class="cat" data-k="ilkokul"><span class="e">🧸</span><b>İlkokul</b><small>8 soru</small></button>
+   <button class="cat" data-k="ortaokul"><span class="e">🎮</span><b>Ortaokul</b><small>8 soru</small></button>
+   <button class="cat" data-k="lise"><span class="e">🚀</span><b>Lise</b><small>8 soru</small></button>
+   <button class="cat" data-k="genel"><span class="e">🕵️</span><b>Genel</b><small>8 soru</small></button>
+  </div>
+ </section>
+ <section id="game" class="hide">
+  <div class="top"><button class="back" id="home" aria-label="Ana menü">←</button><div class="bar"><i id="pb"></i></div><span class="pill" id="cnt"></span></div>
+  <div style="height:52px"></div>
+  <div class="q"><div class="hero" id="em"></div><h2 id="qt"></h2><div id="opts"></div><div class="fb" id="fb"></div></div>
+  <button class="btn hide" id="next">Sonraki soru</button>
+ </section>
+ <section id="end" class="hide">
+  <div class="res">
+   <div class="big" id="re"></div>
+   <h2 id="rt"></h2>
+   <p class="score" id="rs"></p>
+   <div class="dots" id="rd"></div>
+   <p id="rm"></p>
+   <button class="btn" id="again">Tekrar dene</button>
+   <button class="btn alt" id="other">Başka kategori seç</button>
+  </div>
+ </section>
+</main>
+<script>
+// [emoji, soru, [doğru cevap, yanlışlar...], açıklama]  — doğru cevap her zaman ilk sırada; seçenekler ekranda karıştırılır.
+const Q={
+ilkokul:[
+["🔑","Şifreni kiminle paylaşabilirsin?",["Sadece ailenle","En yakın arkadaşınla","Oyundaki yeni arkadaşınla"],"Şifre senin gizli anahtarındır. Sadece güvendiğin büyüklerle paylaşılır."],
+["🧑‍💻","Oyunda tanımadığın biri adresini sordu. Ne yaparsın?",["Cevap vermez, büyüğüme söylerim","Adresimi yazarım","Okulumun adını söylerim"],"Tanımadığın kişilere ev adresi, okul ya da telefon gibi bilgiler verilmez."],
+["🎁","Ekranda “Hediye kazandın, hemen tıkla!” yazısı çıktı. Ne yaparsın?",["Tıklamadan büyüğüme gösteririm","Hemen tıklarım","Arkadaşlarıma da gönderirim"],"Bu tür mesajlar tuzak olabilir. Tıklamadan önce büyüğüne göster."],
+["💪","Hangisi en güçlü şifredir?",["Mv7!kedi*42","1234","Adım ve doğum yılım"],"Güçlü şifre uzun olur; harf, rakam ve işaret içerir, tahmin edilemez."],
+["📸","İnternette fotoğraf paylaşmadan önce ne yapmalısın?",["Ailemden izin alırım","Hemen paylaşırım","Herkese açık yaparım"],"İnternete konan fotoğraf geri alınamayabilir. Önce izin iste."],
+["🛡️","Antivirüs programı ne işe yarar?",["Cihazı zararlı yazılımlardan korur","Oyunu hızlandırır","Şarjı uzun tutar"],"Antivirüs, cihaza zarar veren kötü yazılımları bulur ve engeller."],
+["😠","Biri sana internette kötü şeyler yazdı. Ne yaparsın?",["Cevap vermem, engeller ve büyüğüme söylerim","Ben de kötü yazarım","Kimseye söylemem"],"Karşılık verme. Engelle ve güvendiğin bir büyüğe anlat."],
+["🚪","Ortak bir bilgisayarda işin bitince ne yapmalısın?",["Hesabımdan çıkış yaparım","Ekranı açık bırakırım","Şifremi ekrana yazarım"],"Çıkış yapmazsan sonraki kişi hesabını kullanabilir."]],
+ortaokul:[
+["🎣","Banka adıyla gelen “Hesabın kapanacak, bu linke tıkla!” mesajı nedir?",["Oltalama (phishing) saldırısı","Gerçek bir uyarı","Reklam"],"Phishing, seni sahte sayfaya yönlendirip bilgilerini çalmaya çalışır."],
+["🔐","Güçlü bir şifre için hangisi doğrudur?",["Uzun olmalı, harf-rakam-sembol karışık olmalı","Doğum tarihi olmalı","Herkeste aynı olmalı"],"Uzunluk ve çeşitlilik şifreyi kırmayı zorlaştırır."],
+["📱","İki adımlı doğrulama (2FA) ne sağlar?",["Şifre çalınsa bile hesabı korur","Şifreyi siler","İnterneti hızlandırır"],"Şifrenin yanında ikinci bir kanıt istendiği için hesaba girmek zorlaşır."],
+["☕","Kafedeki ücretsiz Wi-Fi'da en riskli şey hangisi?",["Banka hesabına girmek","Müzik dinlemek","Haritaya bakmak"],"Açık ağlarda trafik izlenebilir. Hassas işlemleri mobil veriyle yap."],
+["📍","Sosyal medyada anlık konum paylaşmak neden risklidir?",["Nerede olduğun ve evde olmadığın anlaşılır","Pil biter","Fotoğraf bulanık çıkar"],"Konum bilgisi seni takip etmek isteyenlere yardım edebilir."],
+["🧱","Siber zorbalığa uğrarsan ilk adım ne olmalı?",["Kanıt (ekran görüntüsü) al, engelle ve bir büyüğe bildir","Hesabı sil ve sus","Aynı şekilde karşılık ver"],"Kanıt toplamak ve yardım istemek çözümü kolaylaştırır."],
+["🔄","Yazılım güncellemeleri neden önemlidir?",["Güvenlik açıklarını kapatır","Sadece rengi değiştirir","Gereksizdir"],"Güncellemeler, saldırganların kullandığı açıkları yamar."],
+["📎","Tanımadığın birinden gelen “oyun_hilesi.exe” dosyasını açar mısın?",["Hayır, zararlı yazılım olabilir","Evet, hile var","Önce arkadaşıma yollarım"],"Bilinmeyen kaynaklı çalıştırılabilir dosyalar sık kullanılan virüs yöntemidir."]],
+lise:[
+["🎭","Saldırganın insanı kandırarak bilgi almasına ne denir?",["Sosyal mühendislik","Port tarama","Defragmentasyon"],"Sosyal mühendislik teknik açık yerine insan zafiyetini hedefler."],
+["🗝️","Şifre yöneticisi neden iyi bir fikirdir?",["Her hesap için benzersiz ve güçlü şifre üretip saklar","Şifreleri herkese gösterir","Şifreyi kısaltır"],"Benzersiz şifreler, tek bir sızıntının her yere yayılmasını önler."],
+["🔒","Fidye yazılımı (ransomware) ne yapar?",["Dosyaları şifreler ve para ister","Wi-Fi'yi hızlandırır","Reklamı engeller"],"En iyi savunma: düzenli, çevrimdışı yedek ve şüpheli ekleri açmamak."],
+["🌐","VPN için hangisi doğrudur?",["Trafiği şifreler ama seni tamamen anonim yapmaz","Seni tamamen görünmez yapar","Virüsleri temizler"],"VPN, bağlantıyı korur ancak VPN sağlayıcısı ve hesapların seni yine tanıyabilir."],
+["♻️","Her sitede aynı şifreyi kullanmanın riski nedir?",["Bir sızıntı tüm hesapları tehlikeye atar (credential stuffing)","Şifre unutulur","Hiçbir riski yok"],"Saldırganlar sızan şifreleri otomatik olarak başka sitelerde dener."],
+["💾","Okul otoparkında bulduğun USB belleği ne yaparsın?",["Bilgisayara takmam, teslim ederim","Merakla takarım","Telefonuma takarım"],"Kasıtlı bırakılan USB'ler cihaza zararlı yazılım bulaştırmak için kullanılabilir."],
+["🧬","Hangisi hesap güvenliği için en sağlamdır?",["Uygulama tabanlı kod ya da donanım anahtarı","SMS ile gelen kod","Hiç 2FA kullanmamak"],"SMS kodları SIM değiştirme saldırılarına açıktır. Uygulama ve anahtar daha güvenlidir."],
+["🔍","Şüpheli e-postada hangi ipucu sahtelik göstergesidir?",["Gönderen alan adının resmi adresle uyuşmaması","Mesajın Türkçe olması","E-postanın sabah gelmesi"],"Gönderen adresini ve linkin gerçek hedefini kontrol et. Acele ettirme de bir işarettir."]],
+genel:[
+["📢","Kullandığın bir servis veri ihlali yaşadı. İlk adımın ne olmalı?",["Şifreyi değiştirmek ve 2FA'yı açmak","Hiçbir şey yapmamak","Hesabı herkese duyurmak"],"Aynı şifreyi kullandığın diğer hesapları da değiştirmeyi unutma."],
+["🎬","Yakınının sesiyle “acil para lazım” diye bir arama aldın. Ne yaparsın?",["Kapatıp kişiyi bilinen numarasından geri ararım","Hemen para gönderirim","Kodu söylerim"],"Yapay zekâ ile ses ve görüntü taklit edilebiliyor (deepfake). Bağımsız doğrulama yap."],
+["🪪","Passkey (geçiş anahtarı) nedir?",["Şifre yerine cihazla doğrulama yapan, oltalamaya dayanıklı yöntem","Güçlü bir şifre türü","Bir antivirüs"],"Passkey'ler siteye özeldir; sahte bir sayfada çalışmaz."],
+["🔳","Bir direkteki afişte QR kod var ve “ödeme yap” diyor. Ne yaparsın?",["Önce kaynağını doğrularım, açılan adrese dikkat ederim","Hemen okutup ödeme yaparım","Kodu herkese yollarım"],"“Quishing”: sahte QR kodlar kullanıcıyı sahte sayfalara yönlendirir."],
+["👔","Patronundan e-posta: “Acil, bu IBAN'a ödeme yap, kimseye söyleme.” Ne yaparsın?",["Ayrı bir kanaldan doğrularım","Hemen öderim","Yanıtlayıp bilgi veririm"],"Bu yönteme iş e-postası dolandırıcılığı (BEC) denir. Acele ve gizlilik baskısı alarm işaretidir."],
+["💽","3-2-1 yedekleme kuralı nedir?",["3 kopya, 2 farklı ortam, 1 tanesi uzakta","3 şifre, 2 cihaz, 1 antivirüs","3 gün, 2 saat, 1 dakika"],"Yedeklemek, fidye yazılımı ve cihaz kaybına karşı en iyi sigortadır."],
+["🤖","Yapay zekâ sohbet botuna ne yapıştırmamalısın?",["Müşteri verileri, şifreler ve gizli belgeler","Genel bilgi soruları","Tarif sorusu"],"Gizli ve kişisel veriler, kuruluşun politikası izin vermedikçe dışarıya paylaşılmamalı."],
+["📞","“Teknik destek” seni arayıp uzaktan erişim programı kurmanı istiyor. Ne yaparsın?",["Kapatırım, resmi kanaldan kendim ararım","Programı kurarım","Ekran paylaşırım"],"Uzaktan erişim verirsen saldırgan cihazının kontrolünü alır. Gerçek destekler seni aramaya başlamaz."]]
+};
+const Meta={ilkokul:"İlkokul",ortaokul:"Ortaokul",lise:"Lise",genel:"Genel"};
+const $=id=>document.getElementById(id);
+let cat,list,i,score,res;
+const shuffle=a=>{a=a.slice();for(let j=a.length-1;j>0;j--){const k=Math.floor(Math.random()*(j+1));[a[j],a[k]]=[a[k],a[j]]}return a};
+function show(id){["menu","game","end"].forEach(s=>$(s).classList.toggle("hide",s!==id))}
+function menu(){document.body.removeAttribute("data-c");history.replaceState(null,"",location.pathname);show("menu");scrollTo(0,0)}
+function start(k){cat=k;document.body.dataset.c=k;history.replaceState(null,"","#"+k);list=shuffle(Q[k]);i=0;score=0;res=[];show("game");ask()}
+function ask(){
+ const [e,q,o,x]=list[i];
+ $("em").textContent=e;$("qt").textContent=q;$("cnt").textContent=(i+1)+"/8";$("pb").style.width=(i/8*100)+"%";
+ $("fb").className="fb";$("next").classList.add("hide");
+ $("em").style.animation="none";void $("em").offsetWidth;$("em").style.animation="";
+ const box=$("opts");box.innerHTML="";
+ shuffle(o.map((t,n)=>({t,ok:n===0}))).forEach(op=>{
+  const b=document.createElement("button");b.className="opt";b.textContent=op.t;
+  b.onclick=()=>pick(op.ok,b);b.dataset.ok=op.ok;box.appendChild(b)});
+}
+function pick(ok,btn){
+ document.querySelectorAll(".opt").forEach(b=>{b.disabled=true;if(b.dataset.ok==="true")b.classList.add("ok")});
+ if(!ok)btn.classList.add("no");else score++;
+ res.push(ok);
+ const fb=$("fb");fb.textContent=(ok?"✅ Doğru! ":"❌ Bu sefer olmadı. ")+list[i][3];fb.className="fb on";
+ $("pb").style.width=((i+1)/8*100)+"%";
+ const n=$("next");n.textContent=i===7?"Sonucu gör":"Sonraki soru";n.classList.remove("hide");n.focus();
+}
+function finish(){
+ const t=score>=7?["🏆","Siber Kahraman!","Harika! Siber dünyada çok güvendesin."]:score>=5?["🛡️","Siber Koruyucu","İyi gidiyorsun, birkaç ayrıntıyla tam puana ulaşırsın."]:score>=3?["🔍","Siber Kaşif","Temeli attın. Standımızdaki ipuçlarına göz at ve tekrar dene!"]:["🌱","Siber Çaylak","Herkes buradan başlar. Tekrar dene, her denemede daha da güçlenirsin!"];
+ $("re").textContent=t[0];$("rt").textContent=t[1];$("rs").textContent=score+" / 8";$("rm").textContent=t[2];
+ $("rd").innerHTML=res.map(r=>`<i class="${r?"g":""}"></i>`).join("");
+ $("pb").style.width="100%";show("end");scrollTo(0,0);
+}
+document.querySelectorAll(".cat").forEach(b=>b.onclick=()=>start(b.dataset.k));
+$("next").onclick=()=>{i<7?(i++,ask()):finish()};
+$("home").onclick=menu;$("other").onclick=menu;$("again").onclick=()=>start(cat);
+const h=location.hash.slice(1);if(Q[h])start(h);
+</script>
+</body>
+</html>
